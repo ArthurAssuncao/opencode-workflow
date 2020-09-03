@@ -16,7 +16,7 @@ O Tray OpenCode Workflow é um conjunto de ferramentas frontend que agiliza a cr
 ## Instalação
 Pré-requisitos: NodeJS, NPM e Ruby 2.3.8.
 
-RecomendaMOS utilizar *NVM* para NodeJS e NPM e *RVM* para Ruby. Sinta-se à vontade para instalá-los como você preferir.
+Recomendamos utilizar *NVM* para NodeJS e NPM e *RVM* para Ruby. Sinta-se à vontade para instalá-los como você preferir.
 
 ### Instalação NodeJS e NPM com NVM
 Para instalar e configurar o NVM e NodeJS faça como mostra na página do [NVM](https://github.com/nvm-sh/nvm#installing-and-updating):
