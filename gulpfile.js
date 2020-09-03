@@ -20,7 +20,7 @@ const path = require('path');
 const yaml = require('js-yaml');
 const process = require('process');
 const cp = require('child_process');
-const spawn = require('cross-spawn');
+const spawn = require('child_process').spawn;
 
 /**
  * Get CLI args
