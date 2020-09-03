@@ -14,11 +14,27 @@ O Tray OpenCode Workflow é um conjunto de ferramentas frontend que agiliza a cr
 * Image minification
 
 ## Instalação
-Pré-requisitos: NodeJS e NPM
+Pré-requisitos: NodeJS, NPM e Ruby 2.3.8.
 
+RecomendaMOS utilizar *NVM* para NodeJS e NPM e *RVM* para Ruby. Sinta-se à vontade para instalá-los como você preferir.
+
+### Instalação NodeJS e NPM com NVM
+Para instalar e configurar o NVM e NodeJS faça como mostra na página do [NVM](https://github.com/nvm-sh/nvm#installing-and-updating):
+1. `Seguir o processo de instalação em https://github.com/nvm-sh/nvm#installing-and-updating`
+2. `nvm install v10.22.0`
+3. `nvm use v10.22.0`
+
+
+### Instalação Ruby 2.3.8 com RVM
+Para instalar e configurar o RVM e Ruby faça como mostra na página do [RVM](https://rvm.io/rvm/install).
+1. `Seguir a instalação em https://rvm.io/`
+2. `rvm install ruby-2.3.8`
+3. `rvm use ruby-2.3.8`
+
+### Instalação do Tray Opencode Workflow
 1. `git clone https://github.com/tray-tecnologia/opencode-workflow.git`
 2. `cd opencode-workflow`
-3. `npm install`
+3. `npm install` ou `yarn install`
 
 ## Configuração/Uso
 
@@ -39,6 +55,8 @@ Após baixar todos os arquivos, volte para a pasta que contém o gulpfile.js e r
 `gulp --folder opencode.commercesuite.com.br`
 
 Pronto, comece a editar seus arquivos e você verá o `gulp` e o `opencode` trabalhando por você!
+
+Caso queira o template do tema padrão atualizado, utilize o https://github.com/tray-tecnologia/theme-template
 
 ## Estrutura de pastas
 
