@@ -59,7 +59,7 @@ const IMGPATH = FOLDER + '/img/';
 const autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass', () => {
-  gulp.src(CSSPATH + 'sass/theme.min.scss')
+  gulp.src(CSSPATH + 'sass/theme.min.scss', { allowEmpty: true })
     .pipe(sass({errLogToConsole: true}))
     .on('error', log)
     .pipe(concat('theme.min.css'))
@@ -69,7 +69,7 @@ gulp.task('sass', () => {
 });
 
 gulp.task('less', () => {
-    gulp.src(CSSPATH + 'less/theme.min.less')
+    gulp.src(CSSPATH + 'less/theme.min.less', { allowEmpty: true })
     .pipe(less())
     .pipe(concat('theme.min.css'))
     .pipe(autoprefixer())
@@ -78,7 +78,7 @@ gulp.task('less', () => {
 });
 
 gulp.task('stylus', () => {
-    gulp.src(CSSPATH + 'stylus/theme.min.styl')
+    gulp.src(CSSPATH + 'stylus/theme.min.styl', { allowEmpty: true })
         .pipe(stylus())
         .pipe(concat('theme.min.css'))
         .pipe(autoprefixer())
@@ -87,7 +87,7 @@ gulp.task('stylus', () => {
 });
 
 gulp.task('js', () => {
-  gulp.src(JSPATH + "modules/*.js")
+  gulp.src(JSPATH + "modules/*.js", { allowEmpty: true })
     .pipe(concat("theme.min.js"))
     .pipe(uglify({"compress": false}))
     .pipe(gulp.dest(JSPATH));
@@ -99,7 +99,7 @@ const imageFiles = [
 ];
 
 gulp.task('imagemin', () => {
-    gulp.src(imageFiles)
+    gulp.src(imageFiles, { allowEmpty: true })
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}]
