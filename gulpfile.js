@@ -61,17 +61,16 @@ const IMGPATH = FOLDER + '/img/';
 const autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass', () => {
-  gulp.src(CSSPATH + 'sass/theme.min.scss', { allowEmpty: true })
-    .pipe(sass({errLogToConsole: true}))
-    .on('error', log)
-    .pipe(concat('theme.min.css'))
+  return gulp.src(CSSPATH + 'sass/theme.min.scss', { allowEmpty: true })
+    .pipe(sass({errLogToConsole: true}).on('error', log))
+    // .pipe(concat('theme.min.css'))
     .pipe(autoprefixer())
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest(CSSPATH));
 });
 
 gulp.task('less', () => {
-    gulp.src(CSSPATH + 'less/theme.min.less', { allowEmpty: true })
+    return gulp.src(CSSPATH + 'less/theme.min.less', { allowEmpty: true })
     .pipe(less())
     .pipe(concat('theme.min.css'))
     .pipe(autoprefixer())
@@ -80,7 +79,7 @@ gulp.task('less', () => {
 });
 
 gulp.task('stylus', () => {
-    gulp.src(CSSPATH + 'stylus/theme.min.styl', { allowEmpty: true })
+    return gulp.src(CSSPATH + 'stylus/theme.min.styl', { allowEmpty: true })
         .pipe(stylus())
         .pipe(concat('theme.min.css'))
         .pipe(autoprefixer())
@@ -89,10 +88,10 @@ gulp.task('stylus', () => {
 });
 
 gulp.task('js', () => {
-  gulp.src(JSPATH + "modules/*.js", { allowEmpty: true })
-    .pipe(concat("theme.min.js"))
-    .pipe(uglify({"compress": false}))
-    .pipe(gulp.dest(JSPATH));
+    return gulp.src(JSPATH + "modules/*.js", { allowEmpty: true })
+        .pipe(concat("theme.min.js"))
+        .pipe(uglify({"compress": false}))
+        .pipe(gulp.dest(JSPATH));
 });
 
 const imageFiles = [
@@ -101,7 +100,7 @@ const imageFiles = [
 ];
 
 gulp.task('imagemin', () => {
-    gulp.src(imageFiles, { allowEmpty: true })
+    return gulp.src(imageFiles, { allowEmpty: true })
         .pipe(imagemin({
             progressive: true,
             svgoPlugins: [{removeViewBox: false}]
@@ -142,21 +141,36 @@ gulp.task('opencode', () => {
     });
 });
 
-gulp.task('watch', () => {
-    gulp.watch(CSSPATH + 'sass/**/*.scss', gulp.parallel('sass'));
-    gulp.watch(CSSPATH + 'less/**/*.less', gulp.parallel('less'));
-    gulp.watch(CSSPATH + 'stylus/**/*.styl', gulp.parallel('stylus'));
-    gulp.watch(JSPATH + 'modules/**/*.js', gulp.parallel('js'));
-    // gulp.watch(imageFiles, ['imagemin']);
+gulp.task('sass:watch', () => {
+    return gulp.watch(CSSPATH + 'sass/**/*.scss', gulp.series('sass'));
 });
+
+gulp.task('less:watch', () => {
+    return gulp.watch(CSSPATH + 'less/**/*.less', gulp.series('less'));
+});
+
+gulp.task('stylus:watch', () => {
+    return gulp.watch(CSSPATH + 'stylus/**/*.styl', gulp.series('stylus'));
+});
+
+gulp.task('js:watch', () => {
+    return gulp.watch(JSPATH + 'modules/**/*.js', gulp.series('js'));
+});
+
+gulp.task('img:watch', () => {
+    // return gulp.watch(imageFiles, ['imagemin']);
+});
+
+gulp.task('watch', gulp.parallel(
+    'sass:watch',
+    'less:watch',
+    'stylus:watch',
+    'js:watch',
+    'img:watch'
+));
 
 gulp.task('default', gulp.parallel(
     'watch',
     'opencode',
     'bsync', // comment this line if you're using remotes envs (Cloud 9, etc...)
-    'sass',
-    'less',
-    'stylus',
-    'js',
-    // 'imagemin',
  ));
