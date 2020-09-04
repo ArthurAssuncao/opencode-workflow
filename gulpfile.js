@@ -22,6 +22,8 @@ const process = require('process');
 const cp = require('child_process');
 const spawn = require('child_process').spawn;
 
+sass.compiler = require('node-sass');
+
 /**
  * Get CLI args
  */
@@ -141,10 +143,10 @@ gulp.task('opencode', () => {
 });
 
 gulp.task('watch', () => {
-    gulp.watch(CSSPATH + 'sass/*', gulp.series('sass'));
-    gulp.watch(CSSPATH + 'less/*', gulp.series('less'));
-    gulp.watch(CSSPATH + 'stylus/*', gulp.series('stylus'));
-    gulp.watch(JSPATH + 'modules/*.js', gulp.series('js'));
+    gulp.watch(CSSPATH + 'sass/**/*.scss', gulp.parallel('sass'));
+    gulp.watch(CSSPATH + 'less/**/*.less', gulp.parallel('less'));
+    gulp.watch(CSSPATH + 'stylus/**/*.styl', gulp.parallel('stylus'));
+    gulp.watch(JSPATH + 'modules/**/*.js', gulp.parallel('js'));
     // gulp.watch(imageFiles, ['imagemin']);
 });
 
