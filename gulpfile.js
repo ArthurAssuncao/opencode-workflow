@@ -15,7 +15,7 @@ const stylus = require('gulp-stylus');
 const cleanCSS = require('gulp-clean-css');
 const imagemin = require('gulp-imagemin');
 const bSync = require('browser-sync').create();
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const path = require('path');
 const yaml = require('js-yaml');
 const process = require('process');
@@ -55,6 +55,7 @@ if (!URL) {
     process.exit(1);
 }
 
+const NODEMODULESPATH = FOLDER + '/node_modules/';
 const CSSPATH = FOLDER + '/css/';
 const JSPATH = FOLDER + '/js/';
 const IMGPATH = FOLDER + '/img/';
@@ -63,7 +64,7 @@ const autoprefixer = require('gulp-autoprefixer');
 gulp.task('sass', () => {
   return gulp.src(CSSPATH + 'sass/theme.min.scss', { allowEmpty: true })
     .pipe(sass({errLogToConsole: true}).on('error', log))
-    // .pipe(concat('theme.min.css'))
+    .pipe(concat('theme.min.css'))
     .pipe(autoprefixer())
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest(CSSPATH));
@@ -88,10 +89,31 @@ gulp.task('stylus', () => {
 });
 
 gulp.task('js', () => {
-    return gulp.src(JSPATH + "modules/*.js", { allowEmpty: true })
+    return gulp.src(JSPATH + "modules/**/*.js", { allowEmpty: true })
         .pipe(concat("theme.min.js"))
         .pipe(uglify({"compress": false}))
         .pipe(gulp.dest(JSPATH));
+});
+
+gulp.task('node:sass', () => {
+  return gulp.src(
+    [NODEMODULESPATH + '**/*.scss'],
+    [NODEMODULESPATH + '**/*/.css']
+  )
+  .pipe(sass({errLogToConsole: true}).on('error', log))
+  .pipe(autoprefixer())
+  .pipe(cleanCSS({compatibility: 'ie8'}))
+  .pipe(gulp.dest(CSSPATH))
+  // .pipe(bSync.stream());
+});
+
+gulp.task('node:js', () => {
+  return gulp.src(
+    [NODEMODULESPATH + '**/*.js'],
+    [NODEMODULESPATH + '**/*/.min.js']
+  )
+  .pipe(gulp.dest(JSPATH))
+  // .pipe(bSync.stream());
 });
 
 const imageFiles = [
@@ -154,11 +176,19 @@ gulp.task('stylus:watch', () => {
 });
 
 gulp.task('js:watch', () => {
-    return gulp.watch(JSPATH + 'modules/**/*.js', gulp.series('js'));
+    return gulp.watch(JSPATH + "modules/**/*.js", gulp.series('js'));
 });
 
 gulp.task('img:watch', () => {
     // return gulp.watch(imageFiles, ['imagemin']);
+});
+
+gulp.task('node:sass:watch', () => {
+    return gulp.watch([NODEMODULESPATH + '**/*.scss', NODEMODULESPATH + '**/*.css'], gulp.series('node:sass'));
+});
+
+gulp.task('node:js:watch', () => {
+    return gulp.watch(NODEMODULESPATH + '**/*.js', gulp.series('node:js'));
 });
 
 gulp.task('watch', gulp.parallel(
@@ -166,7 +196,9 @@ gulp.task('watch', gulp.parallel(
     'less:watch',
     'stylus:watch',
     'js:watch',
-    'img:watch'
+    'img:watch',
+    'node:sass:watch',
+    'node:js:watch'
 ));
 
 gulp.task('default', gulp.parallel(
