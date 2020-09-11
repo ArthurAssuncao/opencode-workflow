@@ -58,6 +58,7 @@ if (!URL) {
 const NODEMODULESPATH = FOLDER + '/node_modules/';
 const CSSPATH = FOLDER + '/css/';
 const JSPATH = FOLDER + '/js/';
+const JSPATH_THIRDPARTY = JSPATH + 'third-party';
 const IMGPATH = FOLDER + '/img/';
 const autoprefixer = require('gulp-autoprefixer');
 
@@ -112,7 +113,7 @@ gulp.task('node:js', () => {
     [NODEMODULESPATH + '**/*.js'],
     [NODEMODULESPATH + '**/*/.min.js']
   )
-  .pipe(gulp.dest(JSPATH))
+  .pipe(gulp.dest(JSPATH_THIRDPARTY))
   // .pipe(bSync.stream());
 });
 
